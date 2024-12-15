@@ -1,0 +1,43 @@
+﻿<Page x:Class="Onion.Desktop.View.SettingsPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+      xmlns:local="clr-namespace:Onion.Desktop.ViewModel.SettingsPage"
+      xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
+      Tag="SettingsPage"
+      mc:Ignorable="d"
+      Title="SettingsPage" Height="450" Width="800">
+    <Page.DataContext>
+        <local:SettingsPageViewModel/>
+    </Page.DataContext>
+    <Grid>
+        <StackPanel>
+            <Label 
+                Margin="100, 0, 100, 0"
+                Content="{Binding LanguageChooseString}"/>
+            <ComboBox
+                Margin="100,0,100,0"
+                Text="Choose language">
+                <ComboBox.Items>
+                    <Label Content="English"/>
+                    <Label Content="Russian"/>
+                </ComboBox.Items>
+            </ComboBox>
+             
+            <Label
+                Margin="100,0,100,0"
+                Content="{Binding MinecraftStoragePathString}"/>
+            <TextBox
+                Margin="100,0,100,0"
+                Text="{Binding MinecraftStoragePath}"/>
+            
+            <Label 
+                Margin="100, 0, 100, 0"
+                Content="{Binding LocalStorageString}"/>
+            <TextBox
+                Text="{Binding LocalStoragePath}"
+                Margin="100, 0, 100, 0"/>
+        </StackPanel>
+    </Grid>
+</Page>
