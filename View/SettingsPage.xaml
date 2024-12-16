@@ -8,20 +8,19 @@
       Tag="SettingsPage"
       mc:Ignorable="d"
       Title="SettingsPage" Height="450" Width="800">
-    <Page.DataContext>
-        <local:SettingsPageViewModel/>
-    </Page.DataContext>
+    <!-- <Page.DataContext> -->
+    <!--     <local:SettingsPageViewModel/> -->
+    <!-- </Page.DataContext> -->
     <Grid>
         <StackPanel>
-            <Label 
+            <Label
                 Margin="100, 0, 100, 0"
                 Content="{Binding LanguageChooseString}"/>
             <ComboBox
                 Margin="100,0,100,0"
                 Text="Choose language">
                 <ComboBox.Items>
-                    <Label Content="English"/>
-                    <Label Content="Russian"/>
+                    <Label Content="{Binding LanguagePackage}"></Label>
                 </ComboBox.Items>
             </ComboBox>
              

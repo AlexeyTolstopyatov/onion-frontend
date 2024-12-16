@@ -24,6 +24,7 @@
             <ColumnDefinition Width="*"/>
             <ColumnDefinition Width="0.25*"/>
         </Grid.ColumnDefinitions>
+        
         <ui:Card
             Padding="30"
             Grid.Column="1"

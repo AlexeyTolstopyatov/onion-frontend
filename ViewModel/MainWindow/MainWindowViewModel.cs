@@ -1,42 +1,50 @@
-﻿using System.ComponentModel;
-using System.Windows;
-using System.Windows.Controls;
-using Onion.Desktop.Model.MainWindow;
-using Onion.Desktop.Reflect;
-using Onion.Desktop.View;
-using Wpf.Ui.Controls;
-using Wpf.Ui.Input;
+﻿using Onion.Desktop.ViewModel.HomePage;
+using Onion.Desktop.ViewModel.SettingsPage;
 
 namespace Onion.Desktop.ViewModel.MainWindow;
 
 public partial class MainWindowViewModel : OnionViewModel
 {
-    // Navigation menu-items Content
-    private string _yourModPacks = "Your Projects";
-    private string _yourSettings = "Settings";
-
-    public MainWindowViewModel()
-    {
-        
-    }
+    public SettingsPageViewModel SettingsViewModel { get; set; }
+    public HomePageViewModel HomeViewModel { get; set; }
     
-    public string YourSettings
+    private string _navigationProjects = "Your Projects";
+    private string _navigationSettings = "Settings";
+    private string _navigationAbout = "About";
+
+    public MainWindowViewModel(SettingsPageViewModel settingsViewModel, HomePageViewModel homeViewModel)
     {
-        get => _yourSettings;
+        SettingsViewModel = settingsViewModel;
+        HomeViewModel = homeViewModel;
+    }
+
+    public string NavigationSettings
+    {
+        get => _navigationSettings;
         set
         {
-            _yourSettings = value;
-            OnPropertyChanged(nameof(_yourSettings));
+            _navigationSettings = value;
+            OnPropertyChanged(nameof(NavigationSettings));
         }
     }
     
-    public string YourModPacks
+    public string NavigationProjects
     {
-        get => _yourModPacks;
+        get => _navigationProjects;
         set
         {
-            _yourModPacks = value;
-            OnPropertyChanged(nameof(_yourModPacks));
+            _navigationProjects = value;
+            OnPropertyChanged(nameof(NavigationProjects));
+        }
+    }
+
+    public string NavigationAbout
+    {
+        get => _navigationAbout;
+        set
+        {
+            _navigationAbout = value;
+            OnPropertyChanged(nameof(NavigationAbout));
         }
     }
 }

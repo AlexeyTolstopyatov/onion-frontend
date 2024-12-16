@@ -9,11 +9,9 @@
         xmlns:view="clr-namespace:Onion.Desktop.View"
         mc:Ignorable="d"
         Title="MainWindow" Height="600" Width="900">
-    
-    <Window.DataContext>
-        <local:MainWindowViewModel/>
-    </Window.DataContext>
-    
+    <!-- <Window.DataContext> -->
+    <!--     <local:MainWindowViewModel/> -->
+    <!-- </Window.DataContext> -->
     <Grid>
         <ui:NavigationView
             x:Name="MainNavigationView"
@@ -27,16 +25,21 @@
             </ui:NavigationView.Header>
             
             <ui:NavigationView.MenuItems>
-                <ui:NavigationViewItem 
+                <ui:NavigationViewItem
                     Tag="HomePage"
-                    Icon="{ui:SymbolIcon AppsList24}"
+                    Icon="{ui:SymbolIcon Info24}"
                     TargetPageType="{x:Type view:HomePage}"
-                    Content="{Binding YourModPacks}"/>
+                    Content="{Binding NavigationAbout}"/>
+                <ui:NavigationViewItem 
+                    Tag="ProjectsPage"
+                    Icon="{ui:SymbolIcon Apps24}"
+                    TargetPageType="{x:Type view:ProjectsPage}"
+                    Content="{Binding NavigationProjects}"/>
                 <ui:NavigationViewItem
                     Tag="SettingsPage"
                     TargetPageType="{x:Type view:SettingsPage}"
                     Icon="{ui:SymbolIcon Settings24}"
-                    Content="{Binding YourSettings}"/>
+                    Content="{Binding NavigationSettings}"/>
             </ui:NavigationView.MenuItems>
         </ui:NavigationView>
         

@@ -4,11 +4,32 @@ namespace Onion.Desktop.ViewModel.SettingsPage;
 
 public class SettingsPageViewModel : OnionViewModel
 {
-    private string _localPacksStorage = "D:\\";
-    private string _minecraftPacksStorage = "D:\\Minecraft\\mods";
-    private string _languageChooseString = "Which language do you use?";
-    private string _minecraftPacksStorageString = "Where is Minecraft mods folder?";
-    private string _localPacksStorageString = "Where you store mod-packs?";
+    private string _localPacksStorage;
+    private string _minecraftPacksStorage;
+    private string _languageChooseString;
+    private string _minecraftPacksStorageString;
+    private string _localPacksStorageString;
+    private string _language;
+
+    public SettingsPageViewModel(string localPacksStorage, string minecraftPacksStorage, string languageChooseString, string minecraftPacksStorageString, string localPacksStorageString, string language)
+    {
+        _localPacksStorage = localPacksStorage;
+        _minecraftPacksStorage = minecraftPacksStorage;
+        _languageChooseString = languageChooseString;
+        _minecraftPacksStorageString = minecraftPacksStorageString;
+        _localPacksStorageString = localPacksStorageString;
+        _language = language;
+    }
+
+    public string LanguagePackage
+    {
+        get => _language;
+        set
+        {
+            _language = value;
+            OnPropertyChanged(nameof(LanguagePackage));
+        }
+    }
     public string LanguageChooseString
     {
         get => _languageChooseString;

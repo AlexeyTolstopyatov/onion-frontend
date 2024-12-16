@@ -13,8 +13,4 @@
       <PackageReference Include="WPF-UI" Version="4.0.0-rc.3" />
     </ItemGroup>
 
-    <ItemGroup>
-      <Folder Include="Model\SettingsModel\" />
-    </ItemGroup>
-
 </Project>
