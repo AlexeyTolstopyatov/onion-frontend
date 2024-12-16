@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<Config>
+    <!--Navigation panel displays
+        0 -> Left
+        1 -> Left Compact
+        2 -> Left Large
+        3 -> Top Window
+        4 -> Bottom Window
+    -->
+    <NavigationPanel>0</NavigationPanel>
+    <Minecraft>D:\Program Files\TLauncher\Minecraft\mods</Minecraft>
+    <Modifications>D:\mods</Modifications>
+    <Culture>Onion.English.xml</Culture>
+</Config>
