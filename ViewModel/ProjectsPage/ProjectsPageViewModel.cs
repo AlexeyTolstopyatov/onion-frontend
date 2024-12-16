@@ -1,16 +1,29 @@
-﻿namespace Onion.Desktop.ViewModel.ProjectsPage;
+﻿using System.Collections.ObjectModel;
+using System.ComponentModel;
+using Onion.Desktop.Model;
+using Onion.Desktop.Services;
 
-public class ProjectsPageViewModel : OnionViewModel
+namespace Onion.Desktop.ViewModel.ProjectsPage;
+
+public class ProjectsPageViewModel : INotifyPropertyChanged
 {
-    private List<string> _items;
+    public ObservableCollection<FilesystemEntityModel> Items { get; set; }
 
-    public IEnumerable<string> Items
+    public ProjectsPageViewModel()
     {
-        get => _items;
-        set
+        EntityService.Instance.OnionMain();
+        Items = new();
+        foreach (var item in EntityService.Instance.ArchiveItems)
         {
-            _items = new List<string>(value);
-            OnPropertyChanged(nameof(Items));
+            Items.Add(item);
         }
+        OnPropertyChanged(nameof(Items));
+        Console.WriteLine("updated");
+    }
+
+    public event PropertyChangedEventHandler? PropertyChanged;
+    private void OnPropertyChanged(string propName)
+    {
+        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propName));
     }
 }

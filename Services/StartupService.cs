@@ -1,14 +1,10 @@
-﻿using System.Diagnostics;
-using System.IO;
-using System.Net;
-using System.Reflection.Metadata;
+﻿using System.IO;
 using System.Xml.Linq;
 using Onion.Desktop.Model.MainWindow;
 using Onion.Desktop.ViewModel.HomePage;
 using Onion.Desktop.ViewModel.MainWindow;
 using Onion.Desktop.ViewModel.SettingsPage;
 using Wpf.Ui.Controls;
-using MessageBox = System.Windows.MessageBox;
 
 namespace Onion.Desktop.Services;
 
@@ -17,8 +13,9 @@ public struct StartupConfig
     public string Language;
     public string Minecraft;
     public string Modifications;
+    public int PanelMode;
 }
-public class StartupService
+public class StartupService : IOnionService
 {
     public static StartupService Instance { get; } = new();
 
@@ -32,14 +29,14 @@ public class StartupService
     /// or get default values from Application's insights.
     /// </summary>
     /// <returns></returns>
-    public void LoadPackages()
+    public void OnionMain()
     {
         XDocument configuration = XDocument.Load(AppDomain.CurrentDomain.BaseDirectory + "Onion.Config.xml");
         
         string package =
             configuration
                 .Descendants()
-                .Elements("culture")
+                .Elements("Culture")
                 .First().Value;
 
         StartupConfig cfg = new()
@@ -47,21 +44,26 @@ public class StartupService
             Language = configuration
                 .Document!
                 .Descendants()
-                .Elements("culture")
+                .Elements("Culture")
                 .First()
                 .Value,
             Minecraft = configuration
                 .Document!
                 .Descendants()
-                .Elements("minecraft")
+                .Elements("Minecraft")
                 .First()
                 .Value,
             Modifications = configuration
                 .Document!
                 .Descendants()
-                .Elements("storage")
+                .Elements("Modifications")
                 .First()
-                .Value
+                .Value,
+            PanelMode = int.Parse(configuration.Document
+                .Descendants()
+                .Elements("NavigationPanel")
+                .First()
+                .Value)
         };
         
         if (File.Exists(package))
@@ -111,7 +113,8 @@ public class StartupService
         {
             NavigationSettings = model.NavigationSettings,
             NavigationProjects = model.NavigationYourProjects,
-            NavigationAbout = model.NavigationAbout
+            NavigationAbout = model.NavigationAbout,
+            DisplayMode = 0
         };
     }
     
@@ -125,13 +128,13 @@ public class StartupService
         XDocument culture = XDocument.Load(AppDomain.CurrentDomain.BaseDirectory + path);
         LanguagesModel model = new()
         {
-            AboutTextBlock = culture.Document!.Descendants("app").Elements("about").First().Value,
-            NavigationAbout = culture.Document!.Descendants("app").Elements("home").First().Value,
-            NavigationSettings = culture.Document!.Descendants("app").Elements("settings").First().Value,
-            NavigationYourProjects = culture.Document!.Descendants("app").Elements("explorer").First().Value,
-            SettingsLanguage = culture.Document!.Descendants("app").Elements("language").First().Value,
-            SettingsMinecraftCatalog = culture.Document!.Descendants("app").Elements("minecraft").First().Value,
-            SettingsModCatalog = culture.Document!.Descendants("app").Elements("modpacks").First().Value
+            AboutTextBlock = culture.Document!.Descendants("Culture").Elements("AboutMessage").First().Value,
+            NavigationAbout = culture.Document!.Descendants("Culture").Elements("NavigationAbout").First().Value,
+            NavigationSettings = culture.Document!.Descendants("Culture").Elements("NavigationSettings").First().Value,
+            NavigationYourProjects = culture.Document!.Descendants("Culture").Elements("NavigationExplorer").First().Value,
+            SettingsLanguage = culture.Document!.Descendants("Culture").Elements("SettingsLanguage").First().Value,
+            SettingsMinecraftCatalog = culture.Document!.Descendants("Culture").Elements("SettingsMinecraftCatalog").First().Value,
+            SettingsModCatalog = culture.Document!.Descendants("Culture").Elements("SettingsModCatalog").First().Value
         };
         
         HomePageViewModel homeViewModel = new()
@@ -151,7 +154,8 @@ public class StartupService
         {
             NavigationSettings = model.NavigationSettings,
             NavigationProjects = model.NavigationYourProjects,
-            NavigationAbout = model.NavigationAbout
+            NavigationAbout = model.NavigationAbout,
+            DisplayMode = (NavigationViewPaneDisplayMode)config.PanelMode
         };
     }
 

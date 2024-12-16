@@ -8,7 +8,7 @@
         xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
         xmlns:view="clr-namespace:Onion.Desktop.View"
         mc:Ignorable="d"
-        Title="MainWindow" Height="600" Width="900">
+        Title="{Binding ApplicationInfo}" Height="700" Width="950">
     <!-- <Window.DataContext> -->
     <!--     <local:MainWindowViewModel/> -->
     <!-- </Window.DataContext> -->
@@ -16,7 +16,8 @@
         <ui:NavigationView
             x:Name="MainNavigationView"
             IsBackButtonVisible="Collapsed"
-            IsPaneOpen="True">
+            IsPaneOpen="False"
+            PaneDisplayMode="{Binding DisplayMode}">
             
             <ui:NavigationView.Header>
                 <ui:BreadcrumbBar

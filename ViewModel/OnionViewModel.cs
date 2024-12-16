@@ -8,9 +8,9 @@ public class OnionViewModel : INotifyPropertyChanged
     public event PropertyChangedEventHandler? PropertyChanged;
 
     /// <summary>
-    /// Изменяет свойство под указанным названием
+    /// Updates property by Name
     /// </summary>
-    protected virtual void OnPropertyChanged(string propertyName)
+    protected void OnPropertyChanged(string propertyName)
     {
         if (string.IsNullOrEmpty(propertyName))
             return;

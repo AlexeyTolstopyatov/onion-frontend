@@ -19,7 +19,7 @@ public partial class MainWindow : MicaWindow
     {
         InitializeComponent();
         ApplicationThemeManager.ApplySystemTheme(); // Using WPF-UI controls
-        StartupService.Instance.LoadPackages();
+        StartupService.Instance.OnionMain();
 
         DataContext = StartupService
             .Instance
