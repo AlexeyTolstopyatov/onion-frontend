@@ -12,12 +12,17 @@ namespace Onion.Desktop.Services;
 /// </summary>
 public class EntityService : IOnionService
 {
-    public static EntityService Instance => new();
+    private static EntityService _instance { get; set; }
+    
+    public static EntityService GetInstance()
+    {
+        return _instance ??= new EntityService();
+    }
 
     /// <summary>
     /// Contains all seeked Filesystem entities
     /// </summary>
-    public List<FilesystemEntityModel> ArchiveItems { get; private set; } = new();
+    public List<EntityModel> ArchiveItems { get; private set; } = new();
     
     
     /// <summary>
@@ -25,6 +30,11 @@ public class EntityService : IOnionService
     /// </summary>
     public void OnionMain()
     {
+        List<string> model = new();
+        
+        if (model == null) 
+            throw new ArgumentNullException(nameof(model));
+
         string whereFind = StartupService
             .Instance
             .MainWindowViewModel
@@ -32,14 +42,22 @@ public class EntityService : IOnionService
             .LocalStoragePath;
         try
         {
-            foreach (string file in Directory.EnumerateFiles("D:/mods", "*.*", SearchOption.AllDirectories))
-            {
-                ArchiveItems.Add(new FilesystemEntityModel(file));
-            }
+            model.AddRange(
+                Directory.EnumerateFiles(
+                    whereFind,
+                    "*.*",
+                    SearchOption.AllDirectories));
         }
-        catch(Exception ex)
+        catch (Exception ex)
         {
             Console.WriteLine(ex.Message);
+        }
+        finally
+        {
+            ArchiveItems = model
+                .Select(i => new EntityModel(i))
+                .ToList();
+            Console.WriteLine("Files moved in global field");
         }
     }
 }

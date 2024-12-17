@@ -7,7 +7,7 @@
       xmlns:filec="clr-namespace:Onion.Desktop.Model"
       xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
       mc:Ignorable="d"
-      Title="ProjectsPage" Height="450" Width="800">
+      Title="ProjectsPage" Height="600" Width="900">
     <Page.DataContext>
         <local:ProjectsPageViewModel/>
     </Page.DataContext>
@@ -15,9 +15,10 @@
         <ui:VirtualizingGridView 
             ItemsSource="{Binding Items}">
             <ui:VirtualizingGridView.ItemTemplate>
-                <!--Trying to memorize-->
                 <DataTemplate>
-                    <ui:CardAction 
+                    <ui:CardAction
+                        MinWidth="250"
+                        MaxWidth="250"
                         Icon="{ui:SymbolIcon FolderZip24}"
                         Content="{Binding FileName}"/>
                 </DataTemplate>
