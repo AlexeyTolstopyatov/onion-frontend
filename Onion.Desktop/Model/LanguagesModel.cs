@@ -1,4 +1,4 @@
-﻿namespace Onion.Desktop.Model.MainWindow;
+﻿namespace Onion.Desktop.Model;
 
 public class LanguagesModel
 {

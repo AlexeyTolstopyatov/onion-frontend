@@ -1,6 +1,4 @@
-﻿using System.Runtime.CompilerServices;
-
-namespace Onion.Desktop.ViewModel.SettingsPage;
+﻿namespace Onion.Desktop.ViewModel.SettingsPage;
 
 public class SettingsPageViewModel : OnionViewModel
 {
@@ -11,7 +9,13 @@ public class SettingsPageViewModel : OnionViewModel
     private string _localPacksStorageString;
     private string _language;
 
-    public SettingsPageViewModel(string localPacksStorage, string minecraftPacksStorage, string languageChooseString, string minecraftPacksStorageString, string localPacksStorageString, string language)
+    public SettingsPageViewModel(
+        string localPacksStorage, 
+        string minecraftPacksStorage, 
+        string languageChooseString, 
+        string minecraftPacksStorageString, 
+        string localPacksStorageString, 
+        string language)
     {
         _localPacksStorage = localPacksStorage;
         _minecraftPacksStorage = minecraftPacksStorage;

@@ -1,6 +1,6 @@
 ﻿using System.IO;
 using System.Xml.Linq;
-using Onion.Desktop.Model.MainWindow;
+using Onion.Desktop.Model;
 using Onion.Desktop.ViewModel.HomePage;
 using Onion.Desktop.ViewModel.MainWindow;
 using Onion.Desktop.ViewModel.SettingsPage;

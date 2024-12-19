@@ -13,4 +13,8 @@
       <PackageReference Include="WPF-UI" Version="4.0.0-rc.3" />
     </ItemGroup>
 
+    <ItemGroup>
+      <ProjectReference Include="..\Onion.Core\Onion.Core.csproj" />
+    </ItemGroup>
+
 </Project>

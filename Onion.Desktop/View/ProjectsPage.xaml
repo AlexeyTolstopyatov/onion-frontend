@@ -12,7 +12,13 @@
         <local:ProjectsPageViewModel/>
     </Page.DataContext>
     <Grid>
-        <ui:VirtualizingGridView 
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="2*"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        
+        <ui:VirtualizingGridView
+            Grid.Column="0"
             ItemsSource="{Binding Items}">
             <ui:VirtualizingGridView.ItemTemplate>
                 <DataTemplate>
@@ -24,5 +30,21 @@
                 </DataTemplate>
             </ui:VirtualizingGridView.ItemTemplate>
         </ui:VirtualizingGridView>
+        
+        <ui:VirtualizingGridView
+            Grid.Column="1"
+            ItemsSource="{Binding SubDirectories}">
+            <ui:VirtualizingGridView.ItemTemplate>
+                <DataTemplate>
+                    <ui:CardAction
+                        MinWidth="200"
+                        MaxWidth="200"
+                        Icon="{ui:SymbolIcon Folder24}"
+                        Content="{Binding FileName}"
+                        Command="{Binding }"/>
+                </DataTemplate>
+            </ui:VirtualizingGridView.ItemTemplate>
+        </ui:VirtualizingGridView>
+        
     </Grid>
 </Page>
