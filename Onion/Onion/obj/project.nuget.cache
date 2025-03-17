@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "dgSpecHash": "/qSvc4San1sW/0JgM7pb0CVaer0U2FX0PtpWTlu1MmFNtNe3L+lB26DFYRykqOp5lDvxnUxYOv/IlOTxjkl0vg==",
+  "success": true,
+  "projectFilePath": "D:\\GitHub\\onion-frontend\\Onion\\Onion\\Onion.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\MagicBook\\.nuget\\packages\\tomlyn\\0.19.0\\tomlyn.0.19.0.nupkg.sha512"
+  ],
+  "logs": []
+}

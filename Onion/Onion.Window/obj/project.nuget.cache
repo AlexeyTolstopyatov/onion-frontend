@@ -1,0 +1,16 @@
+{
+  "version": 2,
+  "dgSpecHash": "1PeXCR8Y+0XbiOmtM/WQAehG5xw+mxItgH0ZOnWQXz5poNXRTfkgmdiKdqkOArDYgeM4ecqG2LPP6NK4LhtrBQ==",
+  "success": true,
+  "projectFilePath": "D:\\GitHub\\onion-frontend\\Onion\\Onion.Window\\Onion.Window.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\MagicBook\\.nuget\\packages\\micawpf\\6.2.10\\micawpf.6.2.10.nupkg.sha512",
+    "C:\\Users\\MagicBook\\.nuget\\packages\\micawpf.core\\6.2.10\\micawpf.core.6.2.10.nupkg.sha512",
+    "C:\\Users\\MagicBook\\.nuget\\packages\\micawpfruntimecomponent\\1.1.9\\micawpfruntimecomponent.1.1.9.nupkg.sha512",
+    "C:\\Users\\MagicBook\\.nuget\\packages\\ookii.dialogs.wpf\\5.0.1\\ookii.dialogs.wpf.5.0.1.nupkg.sha512",
+    "C:\\Users\\MagicBook\\.nuget\\packages\\tomlyn\\0.19.0\\tomlyn.0.19.0.nupkg.sha512",
+    "C:\\Users\\MagicBook\\.nuget\\packages\\wpf-ui\\4.0.2\\wpf-ui.4.0.2.nupkg.sha512",
+    "C:\\Users\\MagicBook\\.nuget\\packages\\wpf-ui.abstractions\\4.0.2\\wpf-ui.abstractions.4.0.2.nupkg.sha512"
+  ],
+  "logs": []
+}
