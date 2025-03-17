@@ -4,6 +4,10 @@ namespace Onion.Window.ViewModels;
 
 public class ModpackPageViewModel : NotifyPropertyChanged
 {
+    #pragma warning disable 
+    public ModpackPageViewModel() {}
+    #pragma warning restore
+    
     public ModpackPageViewModel(string path)
     {
         _model = new ModpackPageModel(path);

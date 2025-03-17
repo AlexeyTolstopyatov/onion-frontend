@@ -6,7 +6,7 @@
       xmlns:local="clr-namespace:Onion.Window.ViewModels"
       xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
       mc:Ignorable="d"
-      Title="ModpackPage" Height="450" Width="800">
+      Title="ModpackPage" Height="Auto" Width="Auto">
     <Page.DataContext>
         <local:ModpackPageViewModel/>
     </Page.DataContext>
@@ -21,12 +21,13 @@
                         <RowDefinition Height="*"/>
                     </Grid.RowDefinitions>
                     <TextBlock
-                        Text="Modpack Name"
+                        Text="ТАБЛИЦА МОДИФИКАЦИЙ"
                         VerticalAlignment="Bottom"
                         FontSize="30"/>
                     <TextBlock
                         Grid.Row="1"
-                        Text="C:\path\to\the\modpack.zip"/>
+                        TextWrapping="WrapWithOverflow"
+                        Text="{Binding Model.ModpackPath}"/>
                     <!--Tables space-->
                     <Grid
                         Grid.Row="2">
@@ -34,10 +35,12 @@
                             <ColumnDefinition Width="200"/>
                             <ColumnDefinition Width="*"/>
                         </Grid.ColumnDefinitions>
-                        <DataGrid
+                        <ui:DataGrid
                             Grid.Column="1"
+                            FontSize="16"
+                            FontFamily="Consolas"
                             ItemsSource="{Binding Model.ModpackEntriesDataTable, UpdateSourceTrigger=PropertyChanged}">
-                        </DataGrid>
+                        </ui:DataGrid>
                         <ui:DataGrid
                             ItemsSource="{Binding Model.ModpackDataTable, UpdateSourceTrigger=PropertyChanged}"
                             Grid.Column="0">

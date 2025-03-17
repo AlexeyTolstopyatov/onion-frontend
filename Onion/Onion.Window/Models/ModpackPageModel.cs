@@ -14,6 +14,9 @@ public sealed class ModpackPageModel
         _path = path;
         if (Path.HasExtension(path)) ProcessDataFromCompressedDirectory();
         else ProcessDataFromDirectory();
+
+        ModpackPath = @"Эта страница содержит таблицу с информацией о содержащихся
+модификациях и модулях, для Minecraft.";
     }
     /// <summary>
     /// Processes models DataTables using list of mods
@@ -21,7 +24,7 @@ public sealed class ModpackPageModel
     private void ProcessDataFromDirectory()
     {
         ModInfoLoader mInst = new();
-        ModpackEntriesDataTable = Task.FromResult(mInst.LoadModsData(_path)).Result;
+        ModpackEntriesDataTable = mInst.LoadModsData(_path);
     }
     /// <summary>
     /// Processes models DataTables using compressed list
@@ -54,6 +57,7 @@ public sealed class ModpackPageModel
         get;
         set;
     }
+
     /// <summary>
     /// Path of modpack
     /// </summary>

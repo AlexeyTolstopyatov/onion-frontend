@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Input;
+using Onion.Window.Views;
 using Ookii.Dialogs.Wpf;
 using Wpf.Ui.Input;
 
@@ -15,6 +17,11 @@ public class MainWindowViewModel : NotifyPropertyChanged
     
     #endregion
 
+    private struct Pages
+    {
+        public Page ModWorkspacePage;
+    }
+
     public MainWindowViewModel()
     {
         _openDialogCommand = new RelayCommand<string>(OpenDialog!);
@@ -23,6 +30,10 @@ public class MainWindowViewModel : NotifyPropertyChanged
         _expandedOperatorsBlocks = false;
     }
 
+    /// <summary>
+    /// Opens OpenFileDialog for choosing compressed list
+    /// </summary>
+    /// <param name="x"></param>
     private void OpenDialog(string x)
     {
         VistaFileDialog dialog = new VistaOpenFileDialog()
@@ -48,20 +59,39 @@ public class MainWindowViewModel : NotifyPropertyChanged
 
         if (dialog.SelectedPath != string.Empty)
             MinecraftPath = dialog.SelectedPath;
+        
+        // [TestMethod]
+        ShowPage(new ModpackPage{DataContext = new ModpackPageViewModel(dialog.SelectedPath)});
     }
-    
+
+    /// <summary>
+    /// Activates page
+    /// </summary>
+    /// <param name="page"></param>
+    private void ShowPage(Page page)
+    {
+        CurrentContent = page;
+    }
+
     private ICommand _openDialogCommand;
     private ICommand _minecraftPathDialogCommand;
     
     private string? _minecraftPath;
-    
+    private Page _currentContent;
+
+    public Page CurrentContent
+    {
+        get => _currentContent;
+        set => SetField(ref _currentContent, value);
+    }
+
     #region PublicFields
     public ICommand OpenDialogCommand
     {
         get => _openDialogCommand;
         set => SetField(ref _openDialogCommand, value);
     }
-
+    
     public ICommand MinecraftPathDialogCommand
     {
         get => _minecraftPathDialogCommand;

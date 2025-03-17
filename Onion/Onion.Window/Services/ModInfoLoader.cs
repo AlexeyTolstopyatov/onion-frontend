@@ -1,4 +1,5 @@
-﻿using Tomlyn.Model;
+﻿using System;
+using Tomlyn.Model;
 using System.Data;
 using System.IO;
 using System.IO.Compression;
@@ -20,7 +21,6 @@ public class ModInfoLoader
         foreach (string filePath in Directory.GetFiles(directoryPath))
         {
             FileInfo fileInfo = new(filePath);
-            
             try
             {
                 using ZipArchive archive = ZipFile.OpenRead(filePath);
@@ -43,13 +43,14 @@ public class ModInfoLoader
         ZipArchiveEntry? tomlEntry = archive.GetEntry("META-INF/mods.toml");
         if (tomlEntry != null)
         {
+            Console.WriteLine("Forge module: " + tomlEntry);
             using Stream stream = tomlEntry.Open();
-            using StreamReader reader = new StreamReader(stream);
+            using StreamReader reader = new(stream);
             
             string tomlContent = reader.ReadToEnd();
             TomlTable model = Toml.Parse(tomlContent).ToModel();
                 
-            if (model.TryGetValue("version", out var versionObj))
+            if (model.TryGetValue("loaderVersion", out var versionObj))
             {
                 return ("Forge", versionObj.ToString()!);
             }
@@ -57,17 +58,13 @@ public class ModInfoLoader
         
         ZipArchiveEntry? fabricJsonEntry = archive.GetEntry("mod.fabric.json");
         if (fabricJsonEntry != null)
-        {
             return ParseFabricBasedMetadata(fabricJsonEntry, "Fabric");
-        }
+        
         
         ZipArchiveEntry? quiltJsonEntry = archive.GetEntry("mod.quilt.json");
-        if (quiltJsonEntry != null)
-        {
-            return ParseFabricBasedMetadata(quiltJsonEntry, "Quilt");
-        }
-
-        return (null!, null!);
+        return quiltJsonEntry != null 
+            ? ParseFabricBasedMetadata(quiltJsonEntry, "Quilt") 
+            : (null!, null!);
     }
 
     private (string Loader, string Version) ParseFabricBasedMetadata(ZipArchiveEntry entry, string loaderName)
@@ -78,7 +75,7 @@ public class ModInfoLoader
             string jsonContent = reader.ReadToEnd();
             JsonDocument doc = JsonDocument.Parse(jsonContent);
 
-            if (doc.RootElement.TryGetProperty("fabricloader", out var versionProp))
+            if (doc.RootElement.TryGetProperty("fabricloader", out JsonElement versionProp))
             {
                 return (loaderName, versionProp.GetInt32().ToString());
             }
@@ -90,7 +87,7 @@ public class ModInfoLoader
     {
         DataRow row = table.NewRow();
         row["FileName"] = fileInfo.Name;
-        row["Size"] = fileInfo.Length;
+        row["Size"] = fileInfo.Length / 8192;
         row["Loader"] = loader;
         row["LoaderVersion"] = version;
         table.Rows.Add(row);

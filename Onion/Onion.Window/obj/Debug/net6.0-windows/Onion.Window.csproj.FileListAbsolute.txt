@@ -31,3 +31,4 @@ D:\GitHub\onion-frontend\Onion\Onion.Window\obj\Debug\net6.0-windows\GeneratedIn
 D:\GitHub\onion-frontend\Onion\Onion.Window\bin\Debug\net6.0-windows\Ookii.Dialogs.Wpf.dll
 D:\GitHub\onion-frontend\Onion\Onion.Window\obj\Debug\net6.0-windows\Views\ModpackPage.g.cs
 D:\GitHub\onion-frontend\Onion\Onion.Window\obj\Debug\net6.0-windows\Views\ModpackPage.baml
+D:\GitHub\onion-frontend\Onion\Onion.Window\bin\Debug\net6.0-windows\Tomlyn.dll
