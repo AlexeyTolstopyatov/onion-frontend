@@ -4,6 +4,7 @@ using System.Data;
 using System.IO;
 using System.IO.Compression;
 using System.Text.Json;
+using Onion.Window.Metadata;
 using Tomlyn;
 
 namespace Onion.Window.Services;
@@ -17,6 +18,7 @@ public class ModInfoLoader
         table.Columns.Add("Size", typeof(long));
         table.Columns.Add("Loader", typeof(string));
         table.Columns.Add("LoaderVersion", typeof(string));
+        table.Columns.Add("MinecraftVersion", typeof(string));
 
         foreach (string filePath in Directory.GetFiles(directoryPath))
         {
@@ -24,9 +26,9 @@ public class ModInfoLoader
             try
             {
                 using ZipArchive archive = ZipFile.OpenRead(filePath);
-                (string loader, string version) = ParseForgeBasedMetadata(archive);
+                (string loader, string version, string mcVersion) = ParseForgeBasedMetadata(archive);
 
-                AddRow(table, fileInfo, loader, version);
+                AddRow(table, fileInfo, loader, version, mcVersion);
             }
             catch (InvalidDataException)
             {
@@ -37,13 +39,16 @@ public class ModInfoLoader
 
         return table;
     }
-
-    private (string Loader, string Version) ParseForgeBasedMetadata(ZipArchive archive)
+    /// <summary>
+    /// Deserializes TOML Forge manifest
+    /// </summary>
+    /// <param name="archive"></param>
+    /// <returns></returns>
+    private (string Loader, string Version, string McVersion) ParseForgeBasedMetadata(ZipArchive archive)
     {
         ZipArchiveEntry? tomlEntry = archive.GetEntry("META-INF/mods.toml");
         if (tomlEntry != null)
         {
-            Console.WriteLine("Forge module: " + tomlEntry);
             using Stream stream = tomlEntry.Open();
             using StreamReader reader = new(stream);
             
@@ -52,44 +57,63 @@ public class ModInfoLoader
                 
             if (model.TryGetValue("loaderVersion", out var versionObj))
             {
-                return ("Forge", versionObj.ToString()!);
+                // fixme: Minecraft Forge mods [[dependencies.mod]]
+                return ("Forge", versionObj.ToString()!, "?");
             }
         }
         
-        ZipArchiveEntry? fabricJsonEntry = archive.GetEntry("mod.fabric.json");
+        ZipArchiveEntry? fabricJsonEntry = archive.GetEntry("fabric.mod.json");
         if (fabricJsonEntry != null)
             return ParseFabricBasedMetadata(fabricJsonEntry, "Fabric");
         
         
-        ZipArchiveEntry? quiltJsonEntry = archive.GetEntry("mod.quilt.json");
+        ZipArchiveEntry? quiltJsonEntry = archive.GetEntry("quilt.mod.json");
         return quiltJsonEntry != null 
             ? ParseFabricBasedMetadata(quiltJsonEntry, "Quilt") 
-            : (null!, null!);
+            : ("[!загрузчик]", "[!загрузчик]", "[!загрузчик]");
     }
-
-    private (string Loader, string Version) ParseFabricBasedMetadata(ZipArchiveEntry entry, string loaderName)
+    /// <summary>
+    /// Deserializes Fabric JSON manifest
+    /// </summary>
+    /// <param name="entry"></param>
+    /// <param name="loaderName"></param>
+    /// <returns></returns>
+    private (string Loader, string Version, string McVersion) ParseFabricBasedMetadata(ZipArchiveEntry entry, string loaderName)
     {
         using (Stream stream = entry.Open())
-        using (StreamReader reader = new StreamReader(stream))
+        using (StreamReader reader = new(stream))
         {
             string jsonContent = reader.ReadToEnd();
-            JsonDocument doc = JsonDocument.Parse(jsonContent);
-
-            if (doc.RootElement.TryGetProperty("fabricloader", out JsonElement versionProp))
+            Fabric document = JsonSerializer.Deserialize<Fabric>(jsonContent)!;
+            
+            if (document.Depends.TryGetValue("fabricloader", out string? depend))
             {
-                return (loaderName, versionProp.GetInt32().ToString());
+                if (document.Depends.TryGetValue("minecraft", out string? mcver))
+                    return (loaderName, depend, mcver);
+
+                return (loaderName, depend, "[не найдено]");
+            }
+
+            if (document.Depends.TryGetValue("fabric", out string? documentDepend))
+            {
+                if (document.Depends.TryGetValue("minecraft", out string? mcver))
+                    return (loaderName, documentDepend, mcver);
+
+                return (loaderName, documentDepend, "[не найдено]");
             }
         }
-        return (loaderName, "Unknown");
+        return (loaderName, "[не найдено]", "[не найдено]");
     }
 
-    private void AddRow(DataTable table, FileInfo fileInfo, string loader, string version)
+    private void AddRow(DataTable table, FileInfo fileInfo, string loader, string version, string mcVersion)
     {
         DataRow row = table.NewRow();
         row["FileName"] = fileInfo.Name;
         row["Size"] = fileInfo.Length / 8192;
         row["Loader"] = loader;
         row["LoaderVersion"] = version;
+        row["MinecraftVersion"] = mcVersion;
+        
         table.Rows.Add(row);
     }
 }
