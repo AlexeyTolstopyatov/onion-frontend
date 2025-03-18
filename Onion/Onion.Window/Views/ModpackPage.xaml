@@ -16,12 +16,12 @@
             <ui:Card.Content>
                 <Grid>
                     <Grid.RowDefinitions>
-                        <RowDefinition Height="70"/>
+                        <RowDefinition Height="50"/>
                         <RowDefinition Height="50"/>
                         <RowDefinition Height="*"/>
                     </Grid.RowDefinitions>
                     <TextBlock
-                        Text="ТАБЛИЦА МОДИФИКАЦИЙ"
+                        Text="{Binding Model.ModpackName}"
                         VerticalAlignment="Bottom"
                         FontSize="30"/>
                     <TextBlock
@@ -29,23 +29,71 @@
                         TextWrapping="WrapWithOverflow"
                         Text="{Binding Model.ModpackPath}"/>
                     <!--Tables space-->
-                    <Grid
-                        Grid.Row="2">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="200"/>
-                            <ColumnDefinition Width="*"/>
-                        </Grid.ColumnDefinitions>
-                        <ui:DataGrid
-                            Grid.Column="1"
-                            FontSize="16"
-                            FontFamily="Consolas"
-                            ItemsSource="{Binding Model.ModpackEntriesDataTable, UpdateSourceTrigger=PropertyChanged}">
-                        </ui:DataGrid>
-                        <ui:DataGrid
-                            ItemsSource="{Binding Model.ModpackDataTable, UpdateSourceTrigger=PropertyChanged}"
-                            Grid.Column="0">
-                        </ui:DataGrid>
-                    </Grid>
+                    <StackPanel 
+                        Grid.Row="2"
+                        Orientation="Horizontal"
+                        Margin="0,10,0,0">
+                        <ui:Card
+                            VerticalAlignment="Top"
+                            HorizontalAlignment="Right">
+                            <ui:Card.Content>
+                                <ui:DataGrid
+                                    HeadersVisibility="None"
+                                    FontSize="16"
+                                    FontFamily="Consolas"
+                                    ItemsSource="{Binding Model.ModpackEntriesDataTable}">
+                                    <ui:DataGrid.Resources>
+                                        <!-- Кисти, использующие цветовые ресурсы -->
+                                        <SolidColorBrush x:Key="FabricBrush" Color="{DynamicResource FabricColor}"/>
+                                        <SolidColorBrush x:Key="ForgeBrush" Color="{DynamicResource ForgeColor}"/>
+                                        <SolidColorBrush x:Key="OnionBrush" Color="{DynamicResource OnionColor}"/>
+                                    </ui:DataGrid.Resources>
+                                    
+                                    <!-- Стиль для строк -->
+                                    <ui:DataGrid.RowStyle>
+                                        <Style TargetType="DataGridRow">
+                                            <Style.Triggers>
+                                                <!-- Триггер для Fabric -->
+                                                <DataTrigger Binding="{Binding Loader}" Value="Fabric">
+                                                    <Setter Property="Background" Value="{StaticResource FabricBrush}"/>
+                                                </DataTrigger>
+                                
+                                                <!-- Триггер для Forge -->
+                                                <DataTrigger Binding="{Binding Loader}" Value="Forge">
+                                                    <Setter Property="Background" Value="{StaticResource ForgeBrush}"/>
+                                                </DataTrigger>
+                                                
+                                                <DataTrigger Binding="{Binding Loader}" Value="Onion">
+                                                    <Setter Property="Background" Value="{StaticResource OnionBrush}"/>
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </ui:DataGrid.RowStyle>
+                                </ui:DataGrid>
+                            </ui:Card.Content>
+                        </ui:Card>
+                        <StackPanel
+                            Margin="10,0,0,0">
+                            <TextBlock
+                                Text="ОБЩИЕ СВЕДЕНИЯ"
+                                FontSize="21"/>
+                            <TextBlock
+                                Text="Таблица общей информации о сборке"
+                                Margin="0,0,0,10"/>
+                            
+                            <ui:Card
+                                VerticalAlignment="Top"
+                                HorizontalAlignment="Left"
+                                Grid.Column="1">
+                                <ui:Card.Content>
+                                    <ui:DataGrid
+                                        ItemsSource="{Binding Model.ModpackDataTable, UpdateSourceTrigger=PropertyChanged}"
+                                        Grid.Column="0">
+                                    </ui:DataGrid>
+                                </ui:Card.Content>
+                            </ui:Card>
+                        </StackPanel>
+                    </StackPanel>
                 </Grid>
             </ui:Card.Content>
         </ui:Card>

@@ -1,4 +1,5 @@
-﻿using Onion.Window.Models;
+﻿using System.Threading.Tasks;
+using Onion.Window.Models;
 
 namespace Onion.Window.ViewModels;
 
@@ -10,7 +11,7 @@ public class ModpackPageViewModel : NotifyPropertyChanged
     
     public ModpackPageViewModel(string path)
     {
-        _model = new ModpackPageModel(path);
+        _model = Task.FromResult(new ModpackPageModel(path)).Result;
     }
     
     private ModpackPageModel _model;

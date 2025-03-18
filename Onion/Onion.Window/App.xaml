@@ -6,8 +6,9 @@
              xmlns:mica="clr-namespace:MicaWPF.Styles;assembly=MicaWPF"
              StartupUri="MainWindow.xaml">
     <Application.Resources>
-         <ResourceDictionary>
-             <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary>
+            <!--Light theme setup-->
+            <ResourceDictionary.MergedDictionaries>
                  <mica:ControlsDictionary/>
                  <mica:ThemeDictionary DesignModeTheme="Light" Theme="Auto"/>
                  <ui:ControlsDictionary/>

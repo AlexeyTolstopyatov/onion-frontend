@@ -60,7 +60,6 @@ public class MainWindowViewModel : NotifyPropertyChanged
         if (dialog.SelectedPath != string.Empty)
             MinecraftPath = dialog.SelectedPath;
         
-        // [TestMethod]
         ShowPage(new ModpackPage{DataContext = new ModpackPageViewModel(dialog.SelectedPath)});
     }
 

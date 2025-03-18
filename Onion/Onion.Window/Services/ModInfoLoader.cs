@@ -3,7 +3,9 @@ using Tomlyn.Model;
 using System.Data;
 using System.IO;
 using System.IO.Compression;
+using System.Linq;
 using System.Text.Json;
+using System.Xml.Linq;
 using Onion.Window.Metadata;
 using Tomlyn;
 
@@ -11,6 +13,64 @@ namespace Onion.Window.Services;
 
 public class ModInfoLoader
 {
+    private FileInfo? _file;
+
+    public string Name { get; set; } = string.Empty;
+    public DataTable LoadOnionScheme()
+    {
+        // deserialize model
+        if (_file == null)
+            return null!;
+
+        DataTable table = new();
+        table.Columns.Add("Key", typeof(string));
+        table.Columns.Add("Value", typeof(string));
+        try
+        {
+            XDocument document = XDocument.Load(_file.FullName);
+            DataRow naming = table.NewRow();
+            naming["Key"] = "Название";
+            naming["Value"] = document
+                .Descendants()
+                .Elements("name")
+                .First()
+                .Value;
+            Name = naming["Value"].ToString();
+            DataRow loader = table.NewRow();
+            loader["Key"] = "Тип загрузчика";
+            loader["Value"] = document
+                .Descendants()
+                .Elements("loader")
+                .First()
+                .Value;
+            DataRow loaderVersion = table.NewRow();
+            loaderVersion["Key"] = "Версия загрузчика";
+            loaderVersion["Value"] = document
+                .Descendants()
+                .Elements("loaderVersion")
+                .First()
+                .Value;
+            DataRow minecraftVersion = table.NewRow();
+            minecraftVersion["Key"] = "Minecraft";
+            minecraftVersion["Value"] = document
+                .Descendants()
+                .Elements("minecraftVersion")
+                .First()
+                .Value;
+            
+            table.Rows.Add(naming);
+            table.Rows.Add(loader);
+            table.Rows.Add(loaderVersion);
+            table.Rows.Add(minecraftVersion);
+            
+            return table;
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            return new DataTable();
+        }
+    }
     public DataTable LoadModsData(string directoryPath)
     {
         DataTable table = new();
@@ -33,6 +93,14 @@ public class ModInfoLoader
             catch (InvalidDataException)
             {
                 // skip entry
+                if (string.Equals(new FileInfo(filePath).Extension, ".oxt", StringComparison.OrdinalIgnoreCase))
+                {
+                    // what if table.oxt exists?
+                    _file = fileInfo;
+                    (string loader, string _, string _) = ParseOnionXaml(filePath);
+                    AddRow(table, fileInfo, loader, string.Empty, string.Empty);
+                }
+
                 continue;
             }
         }
@@ -40,7 +108,7 @@ public class ModInfoLoader
         return table;
     }
     /// <summary>
-    /// Deserializes TOML Forge manifest
+    /// Deserializes TOML ForgeDependency manifest
     /// </summary>
     /// <param name="archive"></param>
     /// <returns></returns>
@@ -57,7 +125,13 @@ public class ModInfoLoader
                 
             if (model.TryGetValue("loaderVersion", out var versionObj))
             {
-                // fixme: Minecraft Forge mods [[dependencies.mod]]
+                // fixme: Minecraft ForgeDependency mods [[dependencies.mod]]
+                // if (model.TryGetValue("modId", out object modid))
+                // {
+                //     ForgeDependency[] deps = Toml.ToModel<ForgeDependency[]>(tomlContent);
+                //     
+                // }
+
                 return ("Forge", versionObj.ToString()!, "?");
             }
         }
@@ -103,6 +177,11 @@ public class ModInfoLoader
             }
         }
         return (loaderName, "[не найдено]", "[не найдено]");
+    }
+
+    private (string Loader, string, string) ParseOnionXaml(string path)
+    {
+        return ("Onion", string.Empty, string.Empty);
     }
 
     private void AddRow(DataTable table, FileInfo fileInfo, string loader, string version, string mcVersion)

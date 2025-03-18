@@ -1,0 +1,6 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <Color x:Key="ForgeColor">#00416a</Color>
+    <Color x:Key="FabricColor">#295c5c</Color>
+    <Color x:Key="OnionColor">#3d2859</Color>
+</ResourceDictionary>
