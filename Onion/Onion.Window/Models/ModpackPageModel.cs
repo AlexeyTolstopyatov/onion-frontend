@@ -26,6 +26,7 @@ public sealed class ModpackPageModel
         ModpackEntriesDataTable = mInst.LoadModsData(_path);
         ModpackDataTable = mInst.LoadOnionScheme();
         ModpackName = (mInst.Name != string.Empty) ? mInst.Name!.ToUpper() : "БЕЗ НАЗВАНИЯ";
+        WarningManifestNotFound = (mInst.Name != string.Empty) ? "" : "Информации о каталоге нет.";
     }
     /// <summary>
     /// Processes models DataTables using compressed list
@@ -63,6 +64,14 @@ public sealed class ModpackPageModel
     /// Path of modpack
     /// </summary>
     public string? ModpackPath
+    {
+        get;
+        set;
+    }
+    /// <summary>
+    /// Shows when Onion Manifest not exists 
+    /// </summary>
+    public string WarningManifestNotFound
     {
         get;
         set;

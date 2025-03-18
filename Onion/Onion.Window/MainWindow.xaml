@@ -64,12 +64,26 @@
             </ui:Card>
             <!--LeftSideMenu -> OperatorsBlock-->
             <ui:CardExpander
-                IsEnabled="False"
+                IsEnabled="{Binding AllowOperatorsBlock}"
+                IsExpanded="{Binding ExpandedOperatorBlock}"
                 Header="Операторы">
                 <ui:CardExpander.Content>
                     <StackPanel>
-                        <!--Operators -> ...-->
-                        
+                        <!--Operators -> Manifest rewrite...-->
+                        <ui:Card>
+                            <ui:Card.Content>
+                                <StackPanel>
+                                    <TextBlock
+                                        TextWrapping="WrapWithOverflow">
+                                        <Run Text="Укажите свойства активного каталога, для быстрой информации о данной сборке."/>
+                                        <LineBreak/>
+                                    </TextBlock>
+                                    <Button
+                                        Command="{Binding OpenManifestDialogCommand}"
+                                        Content="Записать"/>
+                                </StackPanel>
+                            </ui:Card.Content>
+                        </ui:Card>
                     </StackPanel>
                 </ui:CardExpander.Content>
             </ui:CardExpander>

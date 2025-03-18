@@ -2,6 +2,8 @@
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using MicaWPF.Controls;
+using Onion.Window.Models;
 using Onion.Window.Views;
 using Ookii.Dialogs.Wpf;
 using Wpf.Ui.Input;
@@ -26,6 +28,7 @@ public class MainWindowViewModel : NotifyPropertyChanged
     {
         _openDialogCommand = new RelayCommand<string>(OpenDialog!);
         _minecraftPathDialogCommand = new RelayCommand<string>(MinecraftPathOpenDialog!);
+        _openManifestDialog = new RelayCommand<string>(OpenManifestDialog!);
         _allowOperatorBlocks = false;
         _expandedOperatorsBlocks = false;
     }
@@ -36,17 +39,19 @@ public class MainWindowViewModel : NotifyPropertyChanged
     /// <param name="x"></param>
     private void OpenDialog(string x)
     {
-        VistaFileDialog dialog = new VistaOpenFileDialog()
-        {
-            CheckFileExists = true,
-            CheckPathExists = true,
-            ValidateNames = true,
-            Filter = "Архив .zip|*.zip"
-        };
+        VistaFolderBrowserDialog dialog = new();
+        
         dialog.ShowDialog();
         
+        if (string.IsNullOrEmpty(dialog.SelectedPath)) 
+            return;
+        
+        _currentPath = dialog.SelectedPath;
+        ShowPage(new ModpackPage{DataContext = new ModpackPageViewModel(dialog.SelectedPath)});
+        
+        AllowOperatorsBlock = true;
+        ExpandedOperatorBlock = true;
     }
-
     /// <summary>
     /// Memorize selected Minecraft catalog for next usage
     /// from other models/constructors.
@@ -59,10 +64,17 @@ public class MainWindowViewModel : NotifyPropertyChanged
 
         if (dialog.SelectedPath != string.Empty)
             MinecraftPath = dialog.SelectedPath;
-        
-        ShowPage(new ModpackPage{DataContext = new ModpackPageViewModel(dialog.SelectedPath)});
     }
-
+    /// <summary>
+    /// Activates Manifest setup dialog
+    /// </summary>
+    private void OpenManifestDialog(string _)
+    {
+        new ManifestDialogView()
+        {
+            DataContext = new ManifestDialogViewModel(new ManifestDialogModel())
+        }.ShowDialog();
+    }
     /// <summary>
     /// Activates page
     /// </summary>
@@ -74,8 +86,10 @@ public class MainWindowViewModel : NotifyPropertyChanged
 
     private ICommand _openDialogCommand;
     private ICommand _minecraftPathDialogCommand;
+    private ICommand _openManifestDialog;
     
     private string? _minecraftPath;
+    private string? _currentPath;
     private Page _currentContent;
 
     public Page CurrentContent
@@ -85,6 +99,13 @@ public class MainWindowViewModel : NotifyPropertyChanged
     }
 
     #region PublicFields
+
+    public ICommand OpenManifestDialogCommand
+    {
+        get => _openManifestDialog;
+        set => SetField(ref _openManifestDialog, value);
+    }
+
     public ICommand OpenDialogCommand
     {
         get => _openDialogCommand;

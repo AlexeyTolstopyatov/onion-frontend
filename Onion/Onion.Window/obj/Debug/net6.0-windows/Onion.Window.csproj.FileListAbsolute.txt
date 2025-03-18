@@ -34,3 +34,5 @@ D:\GitHub\onion-frontend\Onion\Onion.Window\obj\Debug\net6.0-windows\Views\Modpa
 D:\GitHub\onion-frontend\Onion\Onion.Window\bin\Debug\net6.0-windows\Tomlyn.dll
 D:\GitHub\onion-frontend\Onion\Onion.Window\obj\Debug\net6.0-windows\Themes\Dark.baml
 D:\GitHub\onion-frontend\Onion\Onion.Window\obj\Debug\net6.0-windows\Themes\Light.baml
+D:\GitHub\onion-frontend\Onion\Onion.Window\obj\Debug\net6.0-windows\Views\ManifestDialogView.g.cs
+D:\GitHub\onion-frontend\Onion\Onion.Window\obj\Debug\net6.0-windows\Views\ManifestDialogView.baml

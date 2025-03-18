@@ -83,13 +83,15 @@
                             
                             <ui:Card
                                 VerticalAlignment="Top"
-                                HorizontalAlignment="Left"
-                                Grid.Column="1">
+                                HorizontalAlignment="Left">
                                 <ui:Card.Content>
-                                    <ui:DataGrid
-                                        ItemsSource="{Binding Model.ModpackDataTable, UpdateSourceTrigger=PropertyChanged}"
-                                        Grid.Column="0">
-                                    </ui:DataGrid>
+                                    <StackPanel>
+                                        <TextBlock Text="{Binding Model.WarningManifestNotFound}"/>
+                                        <ui:DataGrid
+                                            ItemsSource="{Binding Model.ModpackDataTable, UpdateSourceTrigger=PropertyChanged}"
+                                            Grid.Column="0">
+                                        </ui:DataGrid>
+                                    </StackPanel>
                                 </ui:Card.Content>
                             </ui:Card>
                         </StackPanel>
