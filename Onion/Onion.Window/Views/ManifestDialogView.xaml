@@ -49,8 +49,9 @@
                             <ui:TextBox 
                                 Text="{Binding Model.Name}"
                                 PlaceholderText="Better than Wolves"/>
+                            <!--SelectedValue returns Object internals: e.g. [ComboBoxItem:Content...]-->
                             <ComboBox 
-                                SelectedValuePath="{Binding Model.Loader}">
+                                SelectedValue="{Binding Model.Loader}">
                                 <ComboBox.Items>
                                     <ComboBoxItem Content="Fabric"/>
                                     <ComboBoxItem Content="Forge"/>

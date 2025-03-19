@@ -35,5 +35,7 @@ public class ManifestDialogViewModel : NotifyPropertyChanged
             Title = "Onion Test",
             Content = $"{Model.Name}, {Model.Loader} {Model.LoaderVersion}, Minecraft {Model.MinecraftVersion}"
         }.ShowDialogAsync();
+        
+        // Set up XAML document [Name.oxt]
     }
 }
