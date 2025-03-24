@@ -26,6 +26,7 @@ namespace Onion.Window
         {
             InitializeComponent();
             ApplicationThemeManager.ApplySystemTheme();
+            App.Current.ShutdownMode = ShutdownMode.OnExplicitShutdown;
         }
     }
 }

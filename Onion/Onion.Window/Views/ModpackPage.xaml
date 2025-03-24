@@ -21,13 +21,13 @@
                         <RowDefinition Height="*"/>
                     </Grid.RowDefinitions>
                     <TextBlock
-                        Text="{Binding Model.ModpackName}"
+                        Text="{Binding Model.Name}"
                         VerticalAlignment="Bottom"
                         FontSize="30"/>
                     <TextBlock
                         Grid.Row="1"
                         TextWrapping="WrapWithOverflow"
-                        Text="{Binding Model.ModpackPath}"/>
+                        Text="{Binding Model.Path}"/>
                     <!--Tables space-->
                     <StackPanel 
                         Grid.Row="2"
@@ -41,7 +41,7 @@
                                     HeadersVisibility="None"
                                     FontSize="16"
                                     FontFamily="Consolas"
-                                    ItemsSource="{Binding Model.ModpackEntriesDataTable}">
+                                    ItemsSource="{Binding Model.EntriesDataTable}">
                                     <ui:DataGrid.Resources>
                                         <!-- Кисти, использующие цветовые ресурсы -->
                                         <SolidColorBrush x:Key="FabricBrush" Color="{DynamicResource FabricColor}"/>
@@ -88,7 +88,7 @@
                                     <StackPanel>
                                         <TextBlock Text="{Binding Model.WarningManifestNotFound}"/>
                                         <ui:DataGrid
-                                            ItemsSource="{Binding Model.ModpackDataTable, UpdateSourceTrigger=PropertyChanged}"
+                                            ItemsSource="{Binding Model.DataTable, UpdateSourceTrigger=PropertyChanged}"
                                             Grid.Column="0">
                                         </ui:DataGrid>
                                     </StackPanel>

@@ -1,7 +1,4 @@
-﻿using System.DirectoryServices;
-using System.Net.NetworkInformation;
-using System.Reflection.PortableExecutable;
-using System.Runtime.Serialization;
+﻿using System.Runtime.Serialization;
 
 namespace Onion.Window.Metadata;
 

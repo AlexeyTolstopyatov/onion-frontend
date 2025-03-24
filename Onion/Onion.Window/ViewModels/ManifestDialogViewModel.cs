@@ -1,4 +1,6 @@
 ﻿using System.Windows.Input;
+using System.Xml.Linq;
+using MicaWPF.Controls;
 using Onion.Window.Models;
 using Wpf.Ui.Input;
 using MessageBox = Wpf.Ui.Controls.MessageBox;
@@ -19,7 +21,7 @@ public class ManifestDialogViewModel : NotifyPropertyChanged
     public ManifestDialogViewModel(ManifestDialogModel model)
     {
         Model = model;
-        _writeManifestCommand = new RelayCommand<string>(WriteManifest!);
+        _writeManifestCommand = new RelayCommand<MicaWindow>(WriteManifest!);
     }
 
     public ICommand WriteManifestCommand
@@ -28,14 +30,17 @@ public class ManifestDialogViewModel : NotifyPropertyChanged
         set => SetField(ref _writeManifestCommand, value);
     }
 
-    private void WriteManifest(string _)
+    private void WriteManifest(MicaWindow window)
     {
-        new MessageBox()
-        {
-            Title = "Onion Test",
-            Content = $"{Model.Name}, {Model.Loader} {Model.LoaderVersion}, Minecraft {Model.MinecraftVersion}"
-        }.ShowDialogAsync();
+        XDocument manifest = new(
+            new XElement(
+                "modpack", 
+                new XElement("name", Model.Name), 
+                new XElement("loader", Model.Loader), 
+                new XElement("loaderVersion", Model.LoaderVersion), 
+                new XElement("minecraftVersion", Model.MinecraftVersion)));
         
-        // Set up XAML document [Name.oxt]
+        manifest.Save(Model.Path! + "\\OnionTable.oxt");
+        window.Close();
     }
 }

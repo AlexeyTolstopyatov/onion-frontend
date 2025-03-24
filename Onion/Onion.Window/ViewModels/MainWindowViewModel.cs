@@ -1,8 +1,7 @@
 ﻿using System;
-using System.Windows;
+using System.IO;
 using System.Windows.Controls;
 using System.Windows.Input;
-using MicaWPF.Controls;
 using Onion.Window.Models;
 using Onion.Window.Views;
 using Ookii.Dialogs.Wpf;
@@ -24,15 +23,61 @@ public class MainWindowViewModel : NotifyPropertyChanged
         public Page ModWorkspacePage;
     }
 
+    #pragma warning disable
     public MainWindowViewModel()
     {
         _openDialogCommand = new RelayCommand<string>(OpenDialog!);
         _minecraftPathDialogCommand = new RelayCommand<string>(MinecraftPathOpenDialog!);
         _openManifestDialog = new RelayCommand<string>(OpenManifestDialog!);
+        _seekMinecraftCommand = new RelayCommand<string>(ReadHead!);
         _allowOperatorBlocks = false;
         _expandedOperatorsBlocks = false;
+        OpenMinecraftMods();
     }
+    #pragma warning restore
+    /// <summary>
+    /// Makes table of loaded mods
+    /// </summary>
+    private void OpenMinecraftMods()
+    {
+        string path = AppDomain.CurrentDomain.BaseDirectory + "head";
+        try
+        {
+            MinecraftPath = File.ReadAllText(path);
+        }
+        catch
+        {
+            MinecraftPath = "Не обнаружено!";
+        }
+    }
+    /// <summary>
+    /// Reads head file and memorizes Minecraft
+    /// directory
+    /// </summary>
+    private void ReadHead(string r)
+    {
+        string path = AppDomain.CurrentDomain.BaseDirectory + "head";
+        
+        __memorize:
+        if (File.Exists(path))
+        {
+            MinecraftPath = File.ReadAllText(path);
+            _currentPath = MinecraftPath;
+            return;
+        }
+        VistaFolderBrowserDialog dialog = new()
+        {
+            Description = "Выберите .minecraft каталог.",
+            Multiselect = false
+        };
+        dialog.ShowDialog();
 
+        if (!string.IsNullOrEmpty(dialog.SelectedPath))
+        {
+            File.WriteAllText(path, dialog.SelectedPath);
+            goto __memorize;
+        }
+    }
     /// <summary>
     /// Opens OpenFileDialog for choosing compressed list
     /// </summary>
@@ -59,11 +104,11 @@ public class MainWindowViewModel : NotifyPropertyChanged
     /// <param name="x"></param>
     private void MinecraftPathOpenDialog(string x)
     {
-        VistaFolderBrowserDialog dialog = new();
-        dialog.ShowDialog();
-
-        if (dialog.SelectedPath != string.Empty)
-            MinecraftPath = dialog.SelectedPath;
+        _currentPath = _minecraftPath + "\\mods";
+        ShowPage(new ModpackPage{DataContext = new ModpackPageViewModel(MinecraftPath + "\\mods")});
+        
+        AllowOperatorsBlock = true;
+        ExpandedOperatorBlock = true;
     }
     /// <summary>
     /// Activates Manifest setup dialog
@@ -72,7 +117,7 @@ public class MainWindowViewModel : NotifyPropertyChanged
     {
         new ManifestDialogView()
         {
-            DataContext = new ManifestDialogViewModel(new ManifestDialogModel())
+            DataContext = new ManifestDialogViewModel(new ManifestDialogModel(){Path = _currentPath})
         }.ShowDialog();
     }
     /// <summary>
@@ -87,7 +132,8 @@ public class MainWindowViewModel : NotifyPropertyChanged
     private ICommand _openDialogCommand;
     private ICommand _minecraftPathDialogCommand;
     private ICommand _openManifestDialog;
-    
+    private ICommand _openLoadedModsCommand;
+    private ICommand _seekMinecraftCommand;
     private string? _minecraftPath;
     private string? _currentPath;
     private Page _currentContent;
@@ -106,6 +152,16 @@ public class MainWindowViewModel : NotifyPropertyChanged
         set => SetField(ref _openManifestDialog, value);
     }
 
+    public ICommand SeekMinecraftCommand
+    {
+        get => _seekMinecraftCommand;
+        set => SetField(ref _seekMinecraftCommand, value);
+    }
+    public ICommand OpenLoadedModsCommand
+    {
+        get => _openLoadedModsCommand;
+        set => SetField(ref _openLoadedModsCommand, value);
+    }
     public ICommand OpenDialogCommand
     {
         get => _openDialogCommand;

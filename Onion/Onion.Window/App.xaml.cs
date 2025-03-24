@@ -13,5 +13,6 @@ namespace Onion.Window
     /// </summary>
     public partial class App : Application
     {
+        
     }
 }

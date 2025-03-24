@@ -8,8 +8,8 @@
         xmlns:mica="clr-namespace:MicaWPF.Controls;assembly=MicaWPF"
         mc:Ignorable="d"
         mica:WindowStyle="ToolWindow"
-        SizeToContent="WidthAndHeight"
-        Title="Создать файл">
+        Title="Создать файл"
+        Height="300" Width="400">
     <Window.DataContext>
         <local:ManifestDialogViewModel/>
     </Window.DataContext>
@@ -50,14 +50,9 @@
                                 Text="{Binding Model.Name}"
                                 PlaceholderText="Better than Wolves"/>
                             <!--SelectedValue returns Object internals: e.g. [ComboBoxItem:Content...]-->
-                            <ComboBox 
-                                SelectedValue="{Binding Model.Loader}">
-                                <ComboBox.Items>
-                                    <ComboBoxItem Content="Fabric"/>
-                                    <ComboBoxItem Content="Forge"/>
-                                    <ComboBoxItem Content="Quilt"/>
-                                </ComboBox.Items>
-                            </ComboBox>
+                            <ui:TextBox
+                                Text="{Binding Model.Loader}"
+                                PlaceholderText="Quilt"/>
                             <ui:TextBox 
                                 Text="{Binding Model.LoaderVersion}"
                                 PlaceholderText="0.15 и выше"/>

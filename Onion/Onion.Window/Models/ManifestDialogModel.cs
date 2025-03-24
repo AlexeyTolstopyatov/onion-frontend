@@ -6,4 +6,5 @@ public class ManifestDialogModel
     public string? Loader { get; set; }
     public string? LoaderVersion { get; set; }
     public string? MinecraftVersion { get; set; }
+    public string? Path { get; set; }
 }

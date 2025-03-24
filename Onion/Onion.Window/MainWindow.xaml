@@ -26,7 +26,7 @@
                     <StackPanel>
                         <TextBlock 
                             TextWrapping="WrapWithOverflow">
-                            <Run Text="Выберите .zip каталог с модификациями для Java Minecraft"/>   
+                            <Run Text="Выберите папку с модификациями для Java Minecraft"/>   
                             <LineBreak/>
                         </TextBlock>
                         <StackPanel 
@@ -36,7 +36,7 @@
                                 Content="Открыть"/>
                             <Button 
                                 Margin="5,0,5,0"
-                                Command="{Binding OpenDialogCommand}"
+                                Command="{Binding MinecraftPathDialogCommand}"
                                 Content="Открыть текущий"/>
                         </StackPanel>
                     </StackPanel>
@@ -48,7 +48,7 @@
                     <StackPanel>
                         <TextBlock
                             TextWrapping="WrapWithOverflow">
-                            <Run Text="Укажите расположение каталога Minecraft"/>
+                            <Run Text="Расположение каталога Minecraft"/>
                             <LineBreak/>
                         </TextBlock>
                         <TextBox
@@ -57,8 +57,8 @@
                             IsReadOnly="True"
                             Margin="0,0,0,10"/>
                         <Button
-                            Command="{Binding MinecraftPathDialogCommand}"
-                            Content="Обзор папок"/>
+                            Command="{Binding SeekMinecraftCommand}"
+                            Content="Найти"/>
                     </StackPanel>
                 </ui:Card.Content>
             </ui:Card>
